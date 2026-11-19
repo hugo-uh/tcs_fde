@@ -1,15 +1,8 @@
+anthropic>=2.0.0
+voyageai
 mcp>=2.0.0
 fastapi>=0.141.0
 uvicorn>=0.52.0
 httpx>=0.28.0
-langgraph
-langchain
-langchain-community
-langchain-text-splitters
-langchain-ollama
-pypdf
 python-dotenv>=1.0
 streamlit>=1.62
-pillow
-langchain-chroma
-tiktoken
