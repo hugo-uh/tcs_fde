@@ -105,16 +105,11 @@ mcp_tools: list = []
 
 def load_mcp_tools() -> list:
     """Fetch tool schemas from the MCP server; empty list if it is unreachable."""
-    global mcp_tools
-    try:
-        result = _mcp(lambda c: c.list_tools())
-        mcp_tools = [
-            {"name": t.name, "description": t.description or "", "input_schema": t.input_schema}
-            for t in result.tools
-        ]
-    except Exception as e:
-        print(f"Warning: MCP server unavailable at {MCP_SERVER_URL}: {e}")
-        mcp_tools = []
+    result = _mcp(lambda c: c.list_tools())
+    mcp_tools = [
+        {"name": t.name, "description": t.description or "", "input_schema": t.input_schema}
+        for t in result.tools
+    ]
     return mcp_tools
 
 
@@ -124,8 +119,6 @@ def run_tool(name, tool_input):
     if name in {t["name"] for t in mcp_tools}:
         result = _mcp(lambda c: c.call_tool(name, tool_input))
         text = "\n".join(b.text for b in result.content if getattr(b, "text", None))
-        if result.is_error:
-            raise RuntimeError(text or "MCP tool error")
         return text
     raise ValueError(f"Unknown tool: {name}")
 
